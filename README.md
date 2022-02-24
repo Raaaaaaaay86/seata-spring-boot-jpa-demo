@@ -27,7 +27,7 @@
 3. order直接建立訂單後才呼叫account服務確認該用戶帳戶是否有足夠金錢
 4. 若account確認用戶有足夠金錢，則扣款後結束整段邏輯
 5. (例外狀況) 若account發現用戶金錢不足，則丟出Exception
-6. (例外狀況) 各服務則依照當言失敗Transaction的XID使用redo_log做rollback的行為
+6. (例外狀況) 各服務則依照當前失敗Transaction的XID使用redo_log做rollback的行為
 7. (例外狀況) Rollback後，stock/account/order的table皆和請求前狀態相同不變
 
 # 測試方法
