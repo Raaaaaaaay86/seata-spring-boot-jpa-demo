@@ -1,7 +1,11 @@
 # seata-spring-boot-jpa-demo
 此專案分為4個Service，分別為Business(Client)、Order、Stock、Account。主要示範將各個微服務結合Seata來處理分布式事務問題(Distributed Transaction)。目前使用的模式是 ```type: file``` (直連模式)，官方建議使用第三方註冊中心來避免不具體服務的健康檢查機制在當TC不可用時無法自動替除列表，透過file直連模式只是為了要快速驗證Seata服務 ([#請閱讀附錄2](https://seata.io/zh-cn/docs/user/configurations.html))。  
 
-### 尚未改善的地方
+## 已解決的問題
+### XID於傳遞鏈中顯示為Null無法正常傳遞於各服務之間
+測試過程中有發現XID只顯示於bussines服務層，沒有繼續往下傳遞下去的情況，造成無法正常rollback [#相似問題](https://github.com/seata/seata-samples/issues/106)。[爬文](https://blog.csdn.net/qq_31189355/article/details/119186140?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164568248916780271978902%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=164568248916780271978902&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-6-119186140.pc_search_result_control_group&utm_term=xid+null)後有發現一些使用到Feign來實作在RequestHeader中加入XID來跨服務傳遞XID。詳看後感覺只是單純使用攔截器在RequestHeader中加入XID，所以就直接使用Sprigboot中的ClientHttpRequestInterceptor來實作自定義的攔截器，並且加入到RestTemplate中。如此一來就能在跨服務請求中同時帶上XID，供全局rollback使用 ([攔截器實作](https://github.com/Raaaaaaaay86/seata-spring-boot-jpa-demo/blob/master/seata-business-service/src/main/java/com/example/seatabusinessservice/config/XidRequestInterceptor.java)、[RestTemplate實作](https://github.com/Raaaaaaaay86/seata-spring-boot-jpa-demo/blob/master/seata-business-service/src/main/java/com/example/seatabusinessservice/config/RestTemplateConfig.java))。
+
+## 尚未改善的地方
 - 未來想試試看Redis, Zookeeper, Etcd (k8s使用的資料庫) 來嘗試作為Seata的註冊中心。
 - SpringBoot專案中的 [application.yml](https://github.com/Raaaaaaaay86/seata-spring-boot-jpa-demo/blob/master/seata-account-service/src/main/resources/application.yml) 似乎可以少寫很多設定，看起來很多都是default值。
 
@@ -10,10 +14,10 @@
   - 於CMD或PowerShell執行```seata-server.bat -p 8091 -m file```
   - 請使用JDK-8。過去有遇上JDK版本過高無法啟動的問題 [#相似問題](https://www.cxyzjd.com/article/weixin_48232225/109351472)
 - 使用all-in-one.sql建立範例SQL環境
-- 直接用IDE啟動seata-account-service (以下專案如發生無法啟動情形請降JDK版本至11，已知過高版本JDK有無法啟動問題) [#相似問題](https://www.itread01.com/content/1544500812.html)
-- 直接用IDE啟動seata-stock-service
-- 直接用IDE啟動seata-orders-service
-- 直接用IDE啟動seata-business-service
+- 直接用IDE啟動seata-account-service(Port: 8083)(以下專案如發生無法啟動情形請降JDK版本至11，已知過高版本JDK有無法啟動問題) [#相似問題](https://www.itread01.com/content/1544500812.html)
+- 直接用IDE啟動seata-stock-service(Port: 8081)
+- 直接用IDE啟動seata-orders-service(Port: 8082)
+- 直接用IDE啟動seata-business-service (Port:8084)
 - 開始測試接口
 
 # 運作邏輯
