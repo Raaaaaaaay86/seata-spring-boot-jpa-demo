@@ -1,5 +1,6 @@
 # seata-spring-boot-jpa-demo
 此專案分為4個Service，分別為Business(Client)、Order、Stock、Account。主要示範將各個微服務結合Seata來處理分布式事務問題(Distributed Transaction)。目前使用的模式是 ```type: file``` (直連模式)，官方建議使用第三方註冊中心來避免不具體服務的健康檢查機制在當TC不可用時無法自動替除列表，透過file直連模式只是為了要快速驗證Seata服務 ([#請閱讀附錄2](https://seata.io/zh-cn/docs/user/configurations.html))。  
+![架構圖](https://user-images.githubusercontent.com/68344696/145942191-7a2d469f-94c8-4cd2-8c7e-46ad75683636.png)
 
 ## 已解決的問題
 ### XID於傳遞鏈中顯示為Null無法正常傳遞於各服務之間
