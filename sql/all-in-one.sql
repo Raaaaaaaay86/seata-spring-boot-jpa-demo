@@ -1,8 +1,11 @@
+CREATE SCHEMA IF NOT EXISTS `db_account`;
+CREATE SCHEMA IF NOT EXISTS `db_order`;
+CREATE SCHEMA IF NOT EXISTS `db_stock`;
+
 # Account
 DROP SCHEMA IF EXISTS db_account;
 CREATE SCHEMA db_account;
-USE
-db_account;
+USE db_account;
 
 CREATE TABLE `account_tbl`
 (
@@ -35,8 +38,7 @@ CREATE TABLE `undo_log`
 # Order
 DROP SCHEMA IF EXISTS db_order;
 CREATE SCHEMA db_order;
-USE
-db_order;
+USE db_order;
 
 CREATE TABLE `order_tbl`
 (
@@ -66,8 +68,7 @@ CREATE TABLE `undo_log`
 # Stock
 DROP SCHEMA IF EXISTS db_stock;
 CREATE SCHEMA db_stock;
-USE
-db_stock;
+USE db_stock;
 
 CREATE TABLE `stock_tbl`
 (
