@@ -11,7 +11,7 @@
 - SpringBoot專案中的 [application.yml](https://github.com/Raaaaaaaay86/seata-spring-boot-jpa-demo/blob/master/seata-account-service/src/main/resources/application.yml) 似乎可以少寫很多設定，看起來很多都是default值。
 
 # 啟動專案
-## 方法(3) - Docker-Compose
+## 方法(1) - Docker-Compose
 - 直接運行 start-services.bat (注意! 請使用 JDK 11)
 - Mysql 暴露在本機 port:3311，並且資料已經預載在資料庫內
   - username: root
