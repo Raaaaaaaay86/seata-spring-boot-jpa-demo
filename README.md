@@ -11,6 +11,13 @@
 - SpringBoot專案中的 [application.yml](https://github.com/Raaaaaaaay86/seata-spring-boot-jpa-demo/blob/master/seata-account-service/src/main/resources/application.yml) 似乎可以少寫很多設定，看起來很多都是default值。
 
 # 啟動專案
+## 方法(3) - Docker-Compose
+- 直接運行 start-services.bat (注意! 請使用 JDK 11)
+- Mysql 暴露在本機 port:3311，並且資料已經預載在資料庫內
+  - username: root
+  - password: eee333rr
+- 開始測試接口(接口暴露在port:8084)
+## 方法(2) - 本地運行
 - 下載並於本機啟動 seata-server (Windows使用.bat)。
   - 於CMD或PowerShell執行```seata-server.bat -p 8091 -m file```
   - 請使用JDK-8。過去有遇上JDK版本過高無法啟動的問題 [#相似問題](https://www.cxyzjd.com/article/weixin_48232225/109351472)
