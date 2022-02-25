@@ -1,0 +1,77 @@
+services:
+  mysql-database:
+    image: mysql:latest
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: eee333rr 
+    ports:
+      - 3311:3306
+    container_name: mysql_database
+  seata-server:
+    image: seataio/seata-server:latest
+    ports:
+      - 8091:8091
+    environment:
+      - SEATA_PORT=8091
+    expose:
+      - 8091
+    container_name: seata-server
+  business-service:
+    build:
+      context: ./seata-business-service
+      dockerfile: Dockerfile
+    environment:
+      SEATA_HOST: seata-server 
+      SEATA_PORT: 8091 
+      STOCK_HOST: stock-service 
+      ORDER_HOST: orders-service 
+    container_name: seata-demo-business-service
+    ports:
+      - "8084:8084"
+  orders-service:
+    build:
+      context: ./seata-orders-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: mysql-database
+      DATABASE_PORT: 3306
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: eee333rr
+      DATABASE_NAME: db_order 
+      SEATA_HOST: seata-server 
+      SEATA_PORT: 8091 
+      ACCOUNT_HOST: account-service
+    expose:
+      - 8082
+    container_name: seata-demo-order-service
+  stock-service:
+    build:
+      context: ./seata-stock-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: mysql-database
+      DATABASE_PORT: 3306
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: eee333rr
+      DATABASE_NAME: db_stock 
+      SEATA_HOST: seata-server 
+      SEATA_PORT: 8091 
+    expose:
+      - 8081
+    container_name: seata-demo-stock-service
+  account-service:
+    build:
+      context: ./seata-account-service
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: mysql-database
+      DATABASE_PORT: 3306
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: eee333rr
+      DATABASE_NAME: db_account 
+      SEATA_HOST: seata-server 
+      SEATA_PORT: 8091 
+    expose:
+      - 8083
+    container_name: seata-demo-account-service
