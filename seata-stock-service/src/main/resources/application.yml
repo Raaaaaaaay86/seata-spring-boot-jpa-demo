@@ -4,9 +4,9 @@ spring:
     application:
         name: stock-service
     datasource:
-        password: pwdpwd
-        url: jdbc:mysql://localhost:3306/db_stock?useSSL=false&serverTimezone=UTC
-        username: root
+        url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+        username: ${DATABASE_USERNAME}
+        password: ${DATABASE_PASSWORD}
     jpa:
         show-sql: true
 seata:
@@ -36,7 +36,7 @@ seata:
         vgroup-mapping:
             my_test_tx_group: default
         grouplist:
-            default: 127.0.0.1:8091
+            default: ${SEATA_HOST}:${SEATA_PORT}
 #        enable-degrade: false
 #        disable-global-transaction: false
     transport:

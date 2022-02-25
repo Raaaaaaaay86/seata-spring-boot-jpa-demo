@@ -1,3 +1,7 @@
+client-service:
+  host:
+    order: ${ORDER_HOST}
+    stock: ${STOCK_HOST}
 server:
   port: 8084
 seata:
@@ -27,7 +31,7 @@ seata:
     vgroup-mapping:
       my_test_tx_group: default
     grouplist:
-      default: 127.0.0.1:8091
+      default: ${SEATA_HOST}:${SEATA_PORT}
 #    enable-degrade: false
 #    disable-global-transaction: false
   transport:

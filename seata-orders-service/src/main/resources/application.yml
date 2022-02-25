@@ -1,12 +1,15 @@
+client-service:
+    host:
+        account: ${ACCOUNT_HOST}
 server:
     port: 8082
 spring:
     application:
         name: order-service
     datasource:
-        password: pwdpwd
-        url: jdbc:mysql://localhost:3306/db_order?useSSL=false&serverTimezone=UTC
-        username: root
+        password: ${DATABASE_PASSWORD}
+        url: jdbc:mysql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?useSSL=false&serverTimezone=UTC
+        username: ${DATABASE_USERNAME}
     jpa:
         show-sql: true
 seata:
@@ -36,7 +39,7 @@ seata:
         vgroup-mapping:
             my_test_tx_group: default
         grouplist:
-            default: 127.0.0.1:8091
+            default: ${SEATA_HOST}:${SEATA_PORT}
 #        enable-degrade: false
 #        disable-global-transaction: false
     transport:
